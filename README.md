@@ -1,8 +1,8 @@
-# Autodoc\Test PHP
+# Autodoc\Test For PHP
 
 ## Introdução
 
-Bem-vindo ao teste para a vaga de desenvolvedor PHP :!
+Bem-vindo ao teste para a vaga de desenvolvedor PHP :elephant: !
 
 Neste teste, você será desafiado a finalizar a implementação de um cliente HTTP que está pela metade, 
 adicionando métodos seguindo o verbo HTTP, como `GET`, `POST`, `PUT` e `DELETE`, e também criar um mecanismo 
