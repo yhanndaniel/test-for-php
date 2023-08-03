@@ -13,6 +13,7 @@ class RequestTest extends TestCase
 {
 
     private HttpRequest $request;
+    private string $baseEndpoint = 'posts/1';
     public function setUp(): void
     {
         parent::setUp();
@@ -21,7 +22,7 @@ class RequestTest extends TestCase
     }
     public function test_get(): void
     {
-        $response = $this->request->get('posts/1');
+        $response = $this->request->get($this->baseEndpoint);
 
         $this->assertInstanceOf(HttpResponse::class, $response);
         $this->assertEquals(200, $response->getHttpCode());
@@ -49,7 +50,7 @@ class RequestTest extends TestCase
 
     public function test_put(): void
     {
-        $response = $this->request->put('posts/1', [], ['title' => 'foo', 'body' => 'bar', 'userId' => 1]);
+        $response = $this->request->put($this->baseEndpoint, [], ['title' => 'foo', 'body' => 'bar', 'userId' => 1]);
 
         $this->assertInstanceOf(HttpResponse::class, $response);
         $this->assertEquals(200, $response->getHttpCode());
@@ -61,7 +62,7 @@ class RequestTest extends TestCase
 
     public function test_delete(): void
     {
-        $response = $this->request->delete('posts/1');
+        $response = $this->request->delete($this->baseEndpoint);
 
         $this->assertInstanceOf(HttpResponse::class, $response);
         $this->assertEquals(200, $response->getHttpCode());
