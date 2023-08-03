@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use App\Services\Cache\MemoryCache;
 use App\Services\Http\HttpRequest;
 use App\Services\Http\HttpResponse;
 use Tests\TestCase;
@@ -16,7 +17,7 @@ class RequestTest extends TestCase
     {
         parent::setUp();
 
-        $this->request = new HttpRequest('https://jsonplaceholder.typicode.com/');
+        $this->request = new HttpRequest('https://jsonplaceholder.typicode.com/', new MemoryCache());
     }
     public function test_get(): void
     {

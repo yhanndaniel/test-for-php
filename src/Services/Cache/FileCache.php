@@ -12,12 +12,13 @@ class FileCache implements ICache
 {
 
     private $scoopDir;
-    private const DIR = './storage/cache/';
+    private $dir;
 
-    public function __construct(string $scoopDir = 'production')
+    public function __construct(string $scoopDir = 'production', string $dir = './storage/cache/')
     {
 
         $this->scoopDir = rtrim($scoopDir, '/') . '/';
+        $this->dir = rtrim($dir, '/') . '/';
     }
     public function get(string $key): array
     {
@@ -38,37 +39,40 @@ class FileCache implements ICache
 
     public function set(string $key, array $value, int $ttl): void
     {
+        $key = $this->prepareKey($key);
         $cache = [
             'ttl' => $this->setDateTTL($ttl),
             'data' => $value
         ];
 
-        if (!file_exists(self::DIR . $this->scoopDir)) {
-            mkdir(self::DIR . $this->scoopDir, 0755, true);
+        if (!file_exists($this->dir . $this->scoopDir)) {
+            mkdir($this->dir . $this->scoopDir, 0755, true);
         }
 
-        $file = fopen(self::DIR . $this->scoopDir.$key, 'w');
+        $file = fopen($this->dir . $this->scoopDir.$key, 'w');
         fwrite($file, serialize($cache));
         fclose($file);
     }
 
     public function delete(string $key): void
     {
-        $file = self::DIR . $this->scoopDir.$key;
+        $key = $this->prepareKey($key);
+        $file = $this->dir . $this->scoopDir.$key;
         unlink($file);
     }
 
     public function flush(): void
     {
-        $files = array_diff(scandir(self::DIR . $this->scoopDir), ['.', '..']);
+        $files = array_diff(scandir($this->dir . $this->scoopDir), ['.', '..']);
 
         foreach ($files as $file) {
-            unlink(self::DIR . $this->scoopDir.$file);
+            unlink($this->dir . $this->scoopDir.$file);
         }
     }
 
     public function has(string $key): bool
     {
+        $key = $this->prepareKey($key);
         $fileContent = $this->getFileContent($key);
 
         if (!$fileContent) {
@@ -77,12 +81,16 @@ class FileCache implements ICache
 
         $cache = unserialize($fileContent);
 
+        if ($cache['ttl'] < new DateTime('now')) {
+            return false;
+        }
+
         return isset($cache);
     }
 
     public function getAll(): array
     {
-        $files = array_diff(scandir(self::DIR . $this->scoopDir), ['.', '..']);
+        $files = array_diff(scandir($this->dir . $this->scoopDir), ['.', '..']);
 
         $cacheArray = [];
         foreach ($files as $file) {
@@ -103,12 +111,18 @@ class FileCache implements ICache
 
     private function getFileContent(string $key): string|false
     {
-        $file = self::DIR . $this->scoopDir.$key;
+        $key = $this->prepareKey($key);
+        $file = $this->dir . $this->scoopDir.$key;
 
         if (!file_exists($file)) {
             return false;
         }
 
         return file_get_contents($file);
+    }
+
+    private function prepareKey(string $key): string
+    {
+        return str_replace('/', '-', $key);
     }
 }

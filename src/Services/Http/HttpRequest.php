@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Http;
 
+use App\Interfaces\ICache;
+
 use function file_get_contents;
 use function http_build_query;
 use function json_decode;
@@ -14,15 +16,23 @@ class HttpRequest
 {
 
     private string $baseUrl;
+    private ICache $cache;
 
-    public function __construct(string $baseUrl)
+    public function __construct(string $baseUrl, ICache $cache)
     {
         $this->baseUrl = $baseUrl;
+        $this->cache = $cache;
     }
 
     public function get(string $endpoint): HttpResponse
     {
-        return $this->call('GET', $endpoint);
+        if($this->cache->has($endpoint)) {
+            return $this->cache->get($endpoint)['response'];
+        }
+        $response = $this->call('GET', $endpoint);
+        $this->cache->set($endpoint, ['response' => $response], 10);
+
+        return $response;
     }
 
     public function post(string $endpoint, array $parameters = null, array $data = null): HttpResponse

@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\Cache\FileCache;
+use App\Services\Cache\MemoryCache;
 use App\Services\Http\HttpRequest;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -9,7 +11,10 @@ $requestType = $_SERVER['REQUEST_METHOD'];
 
 $baseUrl = 'https://jsonplaceholder.typicode.com/';
 
-$request = new HttpRequest($baseUrl);
+$memoryCache = new MemoryCache();
+$fileCache = new FileCache('production', realpath(__DIR__ . '/../storage/cache/'));
+
+$request = new HttpRequest($baseUrl, $fileCache);
 
 
 switch ($requestType) {
