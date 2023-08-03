@@ -8,8 +8,5 @@ use PHPUnit\Framework\TestCase as PHPUnit;
 
 class TestCase extends PHPUnit
 {
-    public function testExampleTrue(): void
-    {
-        $this->assertTrue(true);
-    }
+    
 }

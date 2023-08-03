@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\HttpRequest;
-use App\HttpResponse;
+use App\Services\Http\HttpRequest;
+use App\Services\Http\HttpResponse;
 use Tests\TestCase;
 
 class RequestTest extends TestCase

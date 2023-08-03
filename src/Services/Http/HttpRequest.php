@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Services\Http;
 
 use function file_get_contents;
 use function http_build_query;

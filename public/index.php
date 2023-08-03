@@ -1,8 +1,8 @@
 <?php
 
-use App\HttpRequest;
+use App\Services\Http\HttpRequest;
 
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 
 $requestType = $_SERVER['REQUEST_METHOD'];
