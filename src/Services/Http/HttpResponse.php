@@ -35,11 +35,12 @@ class HttpResponse
         return $this->httpResponseBody;
     }
 
+    //Método para renderizar o json do response da api, no corpo do Json é renderizado o Header e o Body Original
     public function renderJson(): void
     {
         header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
-     
+
         http_response_code($this->httpCode);
 
         $response = array(

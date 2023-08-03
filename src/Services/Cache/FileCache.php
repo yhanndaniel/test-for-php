@@ -102,6 +102,7 @@ class FileCache implements ICache
         return $cacheArray;
     }
 
+    //Método para setar a data de expiração
     private function setDateTTL(int $ttl): DateTime
     {
         $created_at = new DateTime('now');
@@ -109,6 +110,7 @@ class FileCache implements ICache
         return $created_at->add($dateInterval);
     }
 
+    //Método que verifica se o arquivo existe e já pega os dados
     private function getFileContent(string $key): string|false
     {
         $key = $this->prepareKey($key);
@@ -121,6 +123,7 @@ class FileCache implements ICache
         return file_get_contents($file);
     }
 
+    //Método para preparar a chave pois arquivos não aceitam / então eu troquei por -
     private function prepareKey(string $key): string
     {
         return str_replace('/', '-', $key);

@@ -61,6 +61,7 @@ class MemoryCache implements ICache
         return $this->cache;
     }
     
+    //Método para setar a data de expiração
     private function setDateTTL(int $ttl): DateTime
     {
         $created_at = new DateTime('now');

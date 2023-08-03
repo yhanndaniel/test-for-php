@@ -10,12 +10,13 @@ $requestType = $_SERVER['REQUEST_METHOD'];
 
 $baseUrl = 'https://jsonplaceholder.typicode.com/';
 
+//A instancia dos 2 tipos de cache, para escolher qual utilizar é só injetar no HTTPRequest
 $memoryCache = new MemoryCache();
 $fileCache = new FileCache('production', realpath(__DIR__ . '/../storage/cache/'));
-
 $request = new HttpRequest($baseUrl, $fileCache);
 
 
+//De acordo com o tipo de request sera chamado o método correspondente
 switch ($requestType) {
     case 'GET':
         $response = $request->get('posts/1');
@@ -34,4 +35,5 @@ switch ($requestType) {
         break;
 }
 
+//Renderiza a resposta em JSON
 $response->renderJson();
