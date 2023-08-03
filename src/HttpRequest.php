@@ -12,13 +12,44 @@ use function stream_context_create;
 
 class HttpRequest
 {
-    public function call(string $method, string $url, array $parameters = null, array $data = null): HttpResponse
+
+    private string $baseUrl;
+
+    public function __construct(string $baseUrl)
     {
+        $this->baseUrl = $baseUrl;
+    }
+
+    public function get(string $endpoint): HttpResponse
+    {
+        return $this->call('GET', $endpoint);
+    }
+
+    public function post(string $endpoint, array $parameters = null, array $data = null): HttpResponse
+    {
+        return $this->call('POST', $endpoint, $parameters, $data);
+    }
+
+    public function put(string $endpoint, array $parameters = null, array $data = null): HttpResponse
+    {
+        return $this->call('PUT', $endpoint, $parameters, $data);
+    }
+
+    public function delete(string $endpoint): HttpResponse
+    {
+        return $this->call('DELETE', $endpoint);
+    }
+    private function call(string $method, string $endpoint, array $parameters = null, array $data = null): HttpResponse
+    {
+
+        $url = rtrim($this->baseUrl, '/') . '/' . ltrim($endpoint, '/');
+
         $opts = [
             'http' => [
                 'method'  => $method,
                 'header'  => 'Content-type: application/json',
-                'content' => $data ? json_encode($data) : null
+                'content' => $data ? json_encode($data) : null,
+                'ignore_errors' => true
             ]
         ];
 

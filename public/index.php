@@ -7,24 +7,26 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $requestType = $_SERVER['REQUEST_METHOD'];
 
-$request = new HttpRequest();
+$baseUrl = 'https://jsonplaceholder.typicode.com/';
+
+$request = new HttpRequest($baseUrl);
 
 
 switch ($requestType) {
     case 'GET':
-        $response = $request->call('GET', 'https://jsonplaceholder.typicode.com/posts/1');
+        $response = $request->get('posts/1');
         break;
     case 'POST':
-        $response = $request->call('POST', 'https://jsonplaceholder.typicode.com/posts', ['title' => 'foo', 'body' => 'bar', 'userId' => 1]);
+        $response = $request->post('posts', [], ['title' => 'foo', 'body' => 'bar', 'userId' => 1]);
         break;
     case 'PUT':
-        $response = $request->call('PUT', 'https://jsonplaceholder.typicode.com/posts/1', ['title' => 'foo', 'body' => 'bar', 'userId' => 1]);
+        $response = $request->put('posts/1', [], ['title' => 'foo', 'body' => 'bar', 'userId' => 1]);
         break;
     case 'DELETE':
-        $response = $request->call('DELETE', 'https://jsonplaceholder.typicode.com/posts/1');
+        $response = $request->delete('posts/1');
         break;
     default:
-        $response = $request->call('GET', 'https://jsonplaceholder.typicode.com/posts/1');
+        $response = $request->get('posts/');
         break;
 }
 
