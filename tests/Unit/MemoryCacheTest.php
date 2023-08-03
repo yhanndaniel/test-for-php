@@ -46,6 +46,18 @@ class MemoryCacheTest extends TestCase
         $this->assertArrayHasKey('foo', $this->memoryCache->getAll());
     }
 
+    public function test_set_multiple_cache()
+    {
+        $this->memoryCache->set('foo', ['foo' => 'bar'], 10);
+        $this->memoryCache->set('asd', ['asd' => 'vac'], 10);
+        $this->memoryCache->set('zxc', ['zxc' => 'vac'], 10);
+
+
+        $this->assertArrayHasKey('foo', $this->memoryCache->getAll());
+        $this->assertArrayHasKey('asd', $this->memoryCache->getAll());
+        $this->assertArrayHasKey('zxc', $this->memoryCache->getAll());
+    }
+
     public function test_delete_cache()
     {
         $this->memoryCache->set('foo', ['foo' => 'bar'], 10);

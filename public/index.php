@@ -1,11 +1,10 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use App\Services\Cache\FileCache;
 use App\Services\Cache\MemoryCache;
 use App\Services\Http\HttpRequest;
-
-require_once __DIR__ . '/../vendor/autoload.php';
-
 
 $requestType = $_SERVER['REQUEST_METHOD'];
 

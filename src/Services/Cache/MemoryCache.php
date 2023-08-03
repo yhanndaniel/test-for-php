@@ -45,7 +45,15 @@ class MemoryCache implements ICache
 
     public function has(string $key): bool
     {
-        return isset($this->cache[$key]);
+        if (!isset($this->cache[$key])) {
+            return false;
+        }
+
+        if($this->cache[$key]['ttl'] < new DateTime('now')) {
+            return false;
+        }
+
+        return true;
     }
 
     public function getAll(): array
