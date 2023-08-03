@@ -12,7 +12,7 @@ use function stream_context_create;
 
 class HttpRequest
 {
-    public function call(string $method, string $url, array $parameters = null, array $data = null): array
+    public function call(string $method, string $url, array $parameters = null, array $data = null): HttpResponse
     {
         $opts = [
             'http' => [
@@ -25,7 +25,16 @@ class HttpRequest
         $url .= ($parameters ? '?' . http_build_query($parameters) : '');
         
         $response = file_get_contents($url, false, stream_context_create($opts));
+
+        preg_match("#HTTP/[0-9\.]+\s+([0-9]+)#", $http_response_header[0], $out);
+        $httpCode = intval($out[1]);
+
+
         
-        return json_decode($response, true);
+        return new HttpResponse(
+            $httpCode,
+            $http_response_header,
+            json_decode($response, true)
+        );
     }
 }
